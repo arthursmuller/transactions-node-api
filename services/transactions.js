@@ -1,3 +1,4 @@
+const ValidationError = require('../helpers/validation.error')
 
 class TransactionService {
   constructor(db) {
@@ -21,12 +22,12 @@ class TransactionService {
     }
 
     const validatedAmount = Number(amount);
-    if (amount === undefined || isNaN(validatedAmount) || !isFinite(validatedAmount)) {
+    if (amount === undefined || isNaN(validatedAmount) || !isFinite(validatedAmount) || validatedAmount <= 0) {
       errors.push('Amount is not valid.');
     }
 
     if (errors.length > 0) {
-      throw new Error('Invalid transaction data', errors);
+      throw new ValidationError('Invalid transaction data', errors);
     }
 
     return {
